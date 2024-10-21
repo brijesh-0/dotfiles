@@ -68,4 +68,4 @@ The `update.sh` script provides a simple way to keep your system up to date. It 
 
 - After running the `install.sh` script, you may need to restart your terminal or source your shell configuration file to make Node.js available.
 - The cleanup commands in `update.sh` are commented out by default. Uncomment them if you wish to enable cleanup functionality.
-- This scripts was tested on Ubuntu 24.04
+- These scripts were tested on Ubuntu 24.04
