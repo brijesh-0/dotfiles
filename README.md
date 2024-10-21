@@ -49,9 +49,7 @@ The `update.sh` script provides a simple way to keep your system up to date. It 
    ./install.sh
    ```
 
-4. **Follow the Prompts**: The installation script will guide you through the process. Customize the Git configuration with your details.
-
-5. **Run the Update Script**: To keep your system updated in the future, run:
+4. **Run the Update Script**: To keep your system updated in the future, run:
    ```bash
    ./update.sh
    ```
