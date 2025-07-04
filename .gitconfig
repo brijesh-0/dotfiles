@@ -6,3 +6,20 @@
 	gpgsign = true
 [tag]
 	gpgSign = true
+[core]
+    editor = code --wait
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	last = log -1 HEAD
+	unstage = reset HEAD --
+	lg = log --oneline --graph --decorate --all
+
+[log]
+	date = relative
+[color]
+	ui = auto
+[status]
+	short = true
