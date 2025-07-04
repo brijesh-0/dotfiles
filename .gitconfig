@@ -1,0 +1,8 @@
+[user]
+	name = brijesh
+	email = 145837789+brijesh-0@users.noreply.github.com
+	signingkey = 8C3C11E87778BD38
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true

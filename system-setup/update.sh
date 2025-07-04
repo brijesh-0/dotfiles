@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ANSI color codes
 RED='\033[0;31m'
@@ -15,7 +15,6 @@ echo -e "${YELLOW}Upgrading Ubuntu packages...${NC}\n"
 sudo apt upgrade -y
 
 # Clean up unnecessary packages and cached files
-# [Uncomment to clear apt cache and dependencies that are not required
 # echo -e "${YELLOW}Cleaning up Ubuntu packages...${NC}\n"
 # sudo apt autoremove -y
 # sudo apt autoclean
@@ -25,6 +24,6 @@ echo -e "${YELLOW}Updating Snap packages...${NC}\n"
 sudo snap refresh
 
 # update Flatpak
-flatpak update
+# flatpak update -y
 
 echo -e "\n\n${GREEN}Update script completed.${NC}\n"

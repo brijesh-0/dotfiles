@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # ANSI color codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -9,24 +11,21 @@ echo "Updating and upgrading system..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl gnome-tweaks build-essential git
 
-# Configure Git [Change to your details]
+# Configure Git
 echo "Configuring Git..."
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
+git config --global user.name "brijesh"
+git config --global user.email "145837789+brijesh-0@users.noreply.github.com"
 
-# Installing Fonts: 
+# Installing Fonts
 echo "Installing Fonts..."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)" # JetBrains Mono
-sudo apt install fonts-inter-variable
-sudo apt install fonts-firacode
-sudo apt install ttf-mscorefonts-installer
+sudo apt install fonts-inter-variable fonts-firacode ttf-mscorefonts-installer
 
 # Install Bitwarden
 echo "Installing Bitwarden & KeepassXC..."
-sudo snap install bitwarden
-sudo snap install keepassxc
+sudo snap install bitwarden keepassxc
 
-#install Brave Browser (If a Chromium Browser is required)
+# install Chromium Browser
 echo "Installing Brave Browser..."
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
@@ -36,10 +35,8 @@ sudo apt install brave-browser
 # Install Other Utilitiy Apps
 echo "Installing Other Utilitiy Apps..."
 sudo snap install obsidian --classic
-sudo snap install localsend
-sudo snap install pdfarranger
-sudo snap install onlyoffice-desktopeditors
 sudo snap install code --classic
+sudo snap install localsend pdfarranger onlyoffice-desktopeditors
 sudo apt install vlc
 
 
@@ -54,51 +51,12 @@ nvm install 20
 #npm -v # should print `10.7.0`
 
 # Install Flatpak support via FlatHub
-sudo apt install flatpak
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+# sudo apt install flatpak
+# flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 # Cleanup
 echo "Cleaning up..."
 sudo apt autoremove -y
 sudo apt update
-
-# Create update.sh script in /home directory
-echo "Creating update.sh script in /home directory..."
-cat << 'EOF' > ~/update.sh
-#!/bin/bash
-
-# ANSI color codes
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
-
-# Update package lists
-echo -e "${YELLOW}Updating package lists...${NC}\n"
-sudo apt update
-
-# Perform upgrade for Ubuntu packages
-echo -e "${YELLOW}Upgrading Ubuntu packages...${NC}\n"
-sudo apt upgrade -y
-
-# Clean up unnecessary packages and cached files
-# [Uncomment to clear apt cache and dependencies that are not required]
-# echo -e "${YELLOW}Cleaning up Ubuntu packages...${NC}\n"
-# sudo apt autoremove -y
-# sudo apt autoclean
-
-# Update Snap packages
-echo -e "${YELLOW}Updating Snap packages...${NC}\n"
-sudo snap refresh
-
-# update Flatpak
-flatpak update
-
-echo -e "\n\n${GREEN}Update script completed.${NC}\n"
-EOF
-
-# Make the update.sh script executable
-chmod +x ~/update.sh
-
 
 echo -e "\n\n${GREEN}Installation and configuration complete!${NC}"
