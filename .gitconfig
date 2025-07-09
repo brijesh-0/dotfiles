@@ -1,1 +1,26 @@
-/home/brijesh/.gitconfig
+[user]
+	name = brijesh
+	email = 145837789+brijesh-0@users.noreply.github.com
+	signingkey = 8C3C11E87778BD38
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[core]
+    editor = code --wait
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	last = log -1 HEAD
+	unstage = reset HEAD --
+	lg = log --oneline --graph --decorate --all
+
+[log]
+	date = relative
+[color]
+	ui = auto
+[status]
+	short = true
+	
