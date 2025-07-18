@@ -117,20 +117,19 @@
   "vim.leader": "<space>",
   "vim.normalModeKeyBindingsNonRecursive": [
     {
-      "before": [":"],
-      "commands": ["workbench.action.showCommands"]
-    },
-    {
       "before": ["<leader>", "f"],
-      "commands": ["workbench.action.quickOpenPreviousEditor"]
+      "commands": ["workbench.action.quickOpenPreviousEditor"],
+      "silent": true
     },
     {
       "before": ["<leader>", "s", "r"],
-      "commands": ["workbench.action.openRecent"]
+      "commands": ["workbench.action.openRecent"],
+      "silent": true
     },
     {
       "before": ["<leader>", "c"],
-      "commands": ["workbench.action.showCommands"]
+      "commands": ["workbench.action.showCommands"],
+      "silent": true
     },
     {
       "before": ["K"],
@@ -142,7 +141,7 @@
     },
     {
       "before": ["H"],
-      "after": ["0", "w"]
+      "after": ["^"]
     },
     {
       "before": ["]", "d"],
@@ -202,7 +201,7 @@
   "workbench.editor.limit.enabled": true,
   "workbench.editor.limit.perEditorGroup": true,
   "workbench.editor.limit.value": 1,
-  "workbench.editor.showTabs": "single",
+  "workbench.editor.showTabs": "none",
   "workbench.externalBrowser": "firefox",
   "workbench.preferredDarkColorTheme": "Catppuccin Mocha",
   "workbench.preferredLightColorTheme": "GitHub Light",
@@ -211,7 +210,7 @@
   "workbench.tips.enabled": false,
   "window.menuBarVisibility": "toggle",
   "window.commandCenter": false,
-  "window.title": "${rootName}",
+  "window.title": "${rootName} - ${activeEditorShort}",
   "zenMode.hideLineNumbers": false,
   "workbench.startupEditor": "welcomePageInEmptyWorkbench",
   "[typescriptreact]": {

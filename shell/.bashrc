@@ -124,5 +124,9 @@ alias magick='$HOME/snap/magick'
 
 export PATH="$HOME/.local/bin:$PATH"
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 eval "$(zoxide init bash)"
-PS1='\n\[\e[34m\]\w\[\e[0m\]\[\e[32m\]$(__git_ps1)\[\e[00m\] > '
+PS1='\n\[\e[34m\]\w\[\e[0m\]\[\e[32m\]$(__git_ps1)\[\e[00m\] \[\e[34m\]>\[\e[0m\] '
+
+
