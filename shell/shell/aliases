@@ -1,0 +1,4 @@
+# Alias
+alias magick='$HOME/snap/magick' # ImageMagick AppImage, needs to be downloaded manually.
+alias fd='fdfind'
+
