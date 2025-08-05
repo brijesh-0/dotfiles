@@ -23,6 +23,9 @@ vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
 
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+
 -- Clipboard setting
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
@@ -34,4 +37,3 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 -- Require keymaps and lazy.nvim
 require("config.keymaps")
 require("config.lazy")
-

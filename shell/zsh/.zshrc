@@ -15,7 +15,7 @@ setopt HIST_IGNORE_SPACE # Ignore commands starting with space
 setopt SHARE_HISTORY     # Share history across sessions
 
 # Aliases
-[ -f "$XDG_CONFIG_HOME/shell/aliases" ] && source "$XDG_CONFIG_HOME/shell/aliases"
+[ -f "$XDG_CONFIG_HOME/zsh/aliases" ] && source "$XDG_CONFIG_HOME/zsh/aliases"
 
 # Set up fzf key bindings and fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -44,8 +44,8 @@ DISABLE_AUTO_TITLE=true # Remove default terminal title
 # zstyle ':completion:*' menu select
 
 # --- Load plugins ---
-if [ -f "$XDG_CONFIG_HOME/shell/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
-  source "$XDG_CONFIG_HOME/shell/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+if [ -f "$XDG_CONFIG_HOME/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+  source "$XDG_CONFIG_HOME/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
 # Custom Functions

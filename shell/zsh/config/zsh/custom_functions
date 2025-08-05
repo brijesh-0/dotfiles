@@ -1,0 +1,23 @@
+# remove Snap apps interactivly
+snaprm() {
+  local snaps
+  snaps=$(snap list | tail -n +2 | fzf --multi | awk '{print $1}')
+  [[ -z "$snaps" ]] && echo "No snap selected." && return
+  echo "Removing: $snaps"
+  snap remove $snaps
+}
+
+# remove APT apps interactivly
+aptrm() {
+  local selected
+
+  selected=$(dpkg-query -W -f='${Package}\n' | fzf --multi --prompt="Select package(s) to remove: ")
+
+  if [ -z "$selected" ]; then
+    echo "No packages selected."
+    return 1
+  fi
+
+  echo "Removing: $selected"
+  sudo apt remove --purge $selected
+}

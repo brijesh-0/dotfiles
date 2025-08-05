@@ -7,7 +7,7 @@
 [tag]
 	gpgSign = true
 [core]
-    editor = code --wait
+    editor = nvim --wait
 [alias]
 	co = checkout
 	br = branch
