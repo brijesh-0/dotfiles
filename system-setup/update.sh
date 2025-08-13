@@ -8,11 +8,7 @@ NC='\033[0m' # No Color
 
 # Update package lists
 sudo echo -e "${YELLOW}Updating package lists...${NC}\n"
-sudo apt update
-
-# Perform upgrade for Ubuntu packages
-echo -e "${YELLOW}Upgrading Ubuntu packages...${NC}\n"
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 
 # Clean up unnecessary packages and cached files
 # echo -e "${YELLOW}Cleaning up Ubuntu packages...${NC}\n"
