@@ -7,7 +7,8 @@
 [tag]
 	gpgSign = true
 [core]
-    editor = nvim --wait
+	editor = nvim --wait
+	pager = delta
 [alias]
 	co = checkout
 	br = branch
@@ -23,4 +24,13 @@
 	ui = auto
 [status]
 	short = true
-	
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true  # use n and N to move between diff sections
+	dark = true      # or light = true, or omit for auto-detection
+
+[merge]
+	conflictStyle = zdiff3	

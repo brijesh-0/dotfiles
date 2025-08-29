@@ -20,7 +20,7 @@ vim.o.splitbelow = true
 vim.o.list = true
 vim.o.inccommand = 'split'
 vim.o.cursorline = true
-vim.o.scrolloff = 10
+vim.o.scrolloff = 99
 vim.o.confirm = true
 
 vim.o.tabstop = 4
