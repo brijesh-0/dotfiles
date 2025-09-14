@@ -7,12 +7,12 @@
 [tag]
 	gpgSign = true
 [core]
-	editor = nvim --wait
+	editor = nvim
 	pager = delta
 [alias]
 	co = checkout
 	br = branch
-	ci = commit
+	cm = commit
 	st = status
 	last = log -1 HEAD
 	unstage = reset HEAD --
@@ -31,6 +31,7 @@
 [delta]
 	navigate = true  # use n and N to move between diff sections
 	dark = true      # or light = true, or omit for auto-detection
+	side-by-side = true
 
 [merge]
 	conflictStyle = zdiff3	
