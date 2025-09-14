@@ -1,4 +1,12 @@
+function set_kitty_tab_title
+    set -l cwd (pwd)
+    set -l tab_name (basename $cwd)
+    echo -n -e "\033]0;$tab_name\007"
+end
+
 function fish_prompt
+    set_kitty_tab_title
+
     set -l __last_command_exit_status $status
 
     set -l red (set_color -o red)
