@@ -1,9 +1,9 @@
 return {
-	"rebelot/kanagawa.nvim",
-	name = "kanagawa",
+	"catppuccin/nvim",
+	name = "catppuccin",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		vim.cmd[[colorscheme kanagawa-wave]]
-	end
+		vim.cmd([[colorscheme catppuccin-mocha]])
+	end,
 }
