@@ -52,4 +52,4 @@ vim.keymap.set("n", "K", function()
 	vim.lsp.buf.hover({ border = "rounded" })
 end, { desc = "LSP: Hover info" })
 
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })

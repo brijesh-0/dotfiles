@@ -1,6 +1,6 @@
 if status is-interactive
 
-	set -gx FZF_DEFAULT_COMMAND "fd --type file --max-depth 7 --exclude .git --exclude node_modules --exclude venv --exclude .Private"
+	set -gx FZF_DEFAULT_COMMAND "fd --type file --max-depth 7 --exclude .git  --exclude .Private"
 
 	set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 	set -gx FZF_CTRL_T_OPTS "--walker-skip .git,node_modules,target --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
