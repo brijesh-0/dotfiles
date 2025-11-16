@@ -7,6 +7,8 @@ if status is-interactive
 
 	set -g fish_greeting ''
 
+	set -gx MANPAGER "sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+
 	if command -sq zoxide
 	    zoxide init fish | source
 	else

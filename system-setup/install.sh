@@ -13,6 +13,7 @@ mkdir -p ~/.local/bin
 echo "Updating and upgrading system..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl gnome-tweaks build-essential git tree
+sudo apt install ffmpegthumbnailer gstreamer1.0-libav # Fixs Video thumbnailes not showing
 
 # Installing Fonts
 echo "Installing Fonts..."
