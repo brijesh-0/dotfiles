@@ -53,3 +53,7 @@ vim.keymap.set("n", "K", function()
 end, { desc = "LSP: Hover info" })
 
 vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+
+vim.keymap.set("v", "p", '"_dP') -- Do not delete copied text when pasting in visual mode
+
+vim.keymap.set("n", "<leader>ww", ":write<CR>", { noremap = true, silent = true }) -- Write/Save current file
