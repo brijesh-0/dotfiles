@@ -23,7 +23,7 @@
   "chat.commandCenter.enabled": false,
   //"workbench.iconTheme": "material-icon-theme",
   //"workbench.productIconTheme": "material-product-icons",
-  "editor.fontFamily": "'Caskaydia Cove'",
+  "editor.fontFamily": "'JetBrains Mono'",
   // "editor.fontLigatures": "'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09'",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
@@ -31,7 +31,7 @@
   "editor.insertSpaces": false,
   "editor.lineHeight": 1.5,
   "editor.lineNumbers": "relative",
-  // "editor.minimap.autohide": true,
+  "editor.minimap.autohide": "mouseover",
   "editor.minimap.enabled": false,
   "editor.selectionHighlight": false,
   "editor.occurrencesHighlight": "off",
@@ -47,7 +47,7 @@
   "python.createEnvironment.trigger": "off",
   "telemetry.telemetryLevel": "off",
   "terminal.integrated.cursorStyle": "block",
-  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.defaultProfile.linux": "fish",
   "vim.easymotion": true,
   "vim.handleKeys": {
     "<C-a>": false,
@@ -63,7 +63,7 @@
       "silent": true
     },
     {
-      "before": ["<leader>", "s", "r"],
+      "before": ["<leader>", "s", "b"],
       "commands": ["workbench.action.openRecent"],
       "silent": true
     },
@@ -131,7 +131,6 @@
       "after": ["p", "g", "v", "y"]
     }
   ],
-  "workbench.activityBar.location": "hidden",
   "workbench.colorCustomizations": {
     "statusBar.background": "#8FBCBB",
     "statusBar.noFolderBackground": "#8FBCBB",
@@ -139,17 +138,12 @@
     "statusBar.foreground": "#000",
     "statusBar.debuggingForeground": "#000"
   },
-  "workbench.editor.limit.enabled": true,
-  "workbench.editor.limit.perEditorGroup": true,
-  "workbench.editor.limit.value": 1,
-  "workbench.editor.showTabs": "none",
   "workbench.externalBrowser": "firefox",
   "workbench.preferredDarkColorTheme": "Catppuccin Mocha",
   "workbench.preferredLightColorTheme": "GitHub Light",
   "workbench.tree.indent": 12,
   "workbench.tree.renderIndentGuides": "none",
   "workbench.tips.enabled": false,
-  "window.menuBarVisibility": "toggle",
   "window.commandCenter": false,
   "window.title": "${rootName} - ${activeEditorShort}",
   "zenMode.hideLineNumbers": false,
@@ -158,5 +152,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Kanagawa Wave"
+  "workbench.colorTheme": "GitHub Dark Default"
 }

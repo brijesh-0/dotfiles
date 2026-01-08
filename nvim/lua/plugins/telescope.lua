@@ -34,4 +34,15 @@ return {
 		{ "<leader>sm", "<cmd>Telescope marks<cr>", desc = "[S]earch [M]arks" },
 		{ "<leader>scs", "<cmd>Telescope colorscheme<cr>", desc = "[S]earch [C]olor[S]chemes" },
 	},
+	opts = {
+		pickers = {
+			live_grep = {
+				additional_args = {
+					"--glob=!package-lock.json",
+					"--glob=!yarn.lock",
+					"--glob=!pnpm-lock.yaml",
+				},
+			},
+		},
+	},
 }

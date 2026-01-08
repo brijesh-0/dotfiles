@@ -14,4 +14,5 @@
 #     echo $prompt
 # end
 function fish_title
+	echo " "
 end

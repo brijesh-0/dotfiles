@@ -155,8 +155,8 @@ return {
 			"prettier",
 			"prettierd",
 			"shfmt",
-			"isort",
 			"black",
+			"isort",
 		}
 
 		-- Mason-tool-installer → external tools
