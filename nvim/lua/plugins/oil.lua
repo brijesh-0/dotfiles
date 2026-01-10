@@ -1,7 +1,8 @@
 return {
 	"stevearc/oil.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons", "benomahony/oil-git.nvim" },
-	lazy = false,
+	cmd = "Oil",
+	keys = { { "-", "<CMD>Oil --float<CR>", desc = "Open parent directory" } },
 	opts = {
 		default_file_explorer = true, -- replace netrw
 		columns = {
