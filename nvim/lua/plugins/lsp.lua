@@ -1,50 +1,81 @@
 return {
-	-- Main LSP Configuration
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
-
 	dependencies = {
-		{ "mason-org/mason.nvim", cmd = { "Mason" }, opts = {} },
+		-- Lua Development Support
+		{
+			"folke/lazydev.nvim",
+			ft = "lua",
+			opts = {
+				library = { { path = "${3rd}/luv/library", words = { "vim%.uv" } } },
+			},
+		},
+		-- Package Management
+		{ "mason-org/mason.nvim", cmd = "Mason", opts = {} },
 		{ "mason-org/mason-lspconfig.nvim", event = "VeryLazy" },
 		{ "WhoIsSethDaniel/mason-tool-installer.nvim", event = "VeryLazy" },
+		-- UI Enhancements
 		{ "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
 		{ "saghen/blink.cmp", event = "InsertEnter" },
 		{ "nvim-telescope/telescope.nvim", event = "VeryLazy" },
 	},
-
 	config = function()
+		-- 1. SERVER CONFIGURATION
+		-- Define servers and any specific overrides here
+		local servers = {
+			pyright = {},
+			ts_ls = {},
+			lua_ls = {
+				settings = {
+					Lua = { completion = { callSnippet = "Replace" } },
+				},
+			},
+		}
+
+		-- Define tools for Mason to install (formatters, linters)
+		local tools_to_install = {
+			"stylua",
+			"prettier",
+			"prettierd",
+			"shfmt",
+			"black",
+			"isort",
+		}
+
+		-- 2. LSP ATTACHMENT LOGIC
+		-- This runs every time a buffer is attached to an LSP
 		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			callback = function(event)
-				local map = function(keys, func, desc, mode)
-					mode = mode or "n"
-					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+				local client = vim.lsp.get_client_by_id(event.data.client_id)
+				if not client then
+					return
 				end
 
-				map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
-				map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+				local map = function(keys, func, desc)
+					vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+				end
+
+				-- Keymaps: Telescope Integrations
 				map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 				map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 				map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-				map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-				map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
-				map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
 				map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
+				map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
 
-				local function client_supports_method(client, method, bufnr)
-					return client.supports_method(method, { bufnr = bufnr })
-				end
+				-- Keymaps: Native Overrides
+				map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-				local client = vim.lsp.get_client_by_id(event.data.client_id)
+				-- Feature: Document Highlighting (CursorHold)
+				-- Fix: Suppress param-type-mismatch for 0.11 API change
+				---@diagnostic disable-next-line: param-type-mismatch
 				if
-					client
-					and client_supports_method(
-						client,
+					client:supports_method(
 						vim.lsp.protocol.Methods.textDocument_documentHighlight,
-						event.buf
+						{ bufnr = event.buf }
 					)
 				then
-					local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
+					local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
 
 					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 						buffer = event.buf,
@@ -59,28 +90,29 @@ return {
 					})
 
 					vim.api.nvim_create_autocmd("LspDetach", {
-						group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
+						group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
 						callback = function(event2)
 							vim.lsp.buf.clear_references()
-							vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
+							vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
 						end,
 					})
 				end
 
-				if
-					client
-					and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
-				then
+				-- Feature: Inlay Hints Toggle
+				---@diagnostic disable-next-line: param-type-mismatch
+				if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, { bufnr = event.buf }) then
 					map("<leader>th", function()
-						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+						local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
+						vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = event.buf })
 					end, "[T]oggle Inlay [H]ints")
 				end
 			end,
 		})
 
+		-- 3. DIAGNOSTIC UI CONFIGURATION
 		vim.diagnostic.config({
 			severity_sort = true,
-			float = { border = "rounded", source = "if_many" },
+			float = { source = "if_many" },
 			underline = { severity = vim.diagnostic.severity.ERROR },
 			signs = vim.g.have_nerd_font and {
 				text = {
@@ -93,87 +125,39 @@ return {
 			virtual_text = {
 				source = "if_many",
 				spacing = 2,
+				format = function(diagnostic)
+					-- Custom format: "Error: My error message [source]"
+					local icons = {
+						[vim.diagnostic.severity.ERROR] = "Error",
+						[vim.diagnostic.severity.WARN] = "Warn",
+						[vim.diagnostic.severity.INFO] = "Info",
+						[vim.diagnostic.severity.HINT] = "Hint",
+					}
+					return string.format("%s: %s", icons[diagnostic.severity], diagnostic.message)
+				end,
 			},
 		})
 
+		-- 4. SETUP EXECUTION
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-		-- Define your LSP servers
-		local servers = {
-			pyright = {},
-			ts_ls = {},
-			lua_ls = {
-				on_init = function(client)
-					if not client.workspace_folders or #client.workspace_folders == 0 then
-						client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua or {}, {
-							runtime = {
-								version = "LuaJIT",
-								path = { "lua/?.lua", "lua/?/init.lua" },
-							},
-							workspace = {
-								checkThirdParty = false,
-								library = { vim.env.VIMRUNTIME },
-							},
-						})
-						return
-					end
-
-					local path = client.workspace_folders[1].name
-					if
-						path ~= vim.fn.stdpath("config")
-						and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
-					then
-						return
-					end
-
-					client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua or {}, {
-						runtime = {
-							version = "LuaJIT",
-							path = { "lua/?.lua", "lua/?/init.lua" },
-						},
-						workspace = {
-							checkThirdParty = false,
-							library = { vim.env.VIMRUNTIME },
-						},
-					})
-				end,
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" },
-							disable = { "missing-fields" },
-						},
-						completion = { callSnippet = "Replace" },
-					},
-				},
-			},
-		}
-
-		-- Define external tools (formatters, linters, etc.)
-		local tools = {
-			"stylua",
-			"prettier",
-			"prettierd",
-			"shfmt",
-			"black",
-			"isort",
-		}
-
-		-- Mason-tool-installer → external tools
 		require("mason-tool-installer").setup({
-			ensure_installed = tools,
+			ensure_installed = tools_to_install,
 			run_on_start = true,
 		})
 
-		-- Mason-lspconfig → LSP servers
 		require("mason-lspconfig").setup({
 			ensure_installed = vim.tbl_keys(servers),
 			automatic_installation = true,
 			handlers = {
 				function(server_name)
 					local server = servers[server_name] or {}
+					-- Merge default blink capabilities with server specific ones
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					require("lspconfig")[server_name].setup(server)
+
+					-- Native Neovim 0.11+ Setup
+					vim.lsp.config(server_name, server)
+					vim.lsp.enable(server_name)
 				end,
 			},
 		})
