@@ -1,11 +1,37 @@
 return {
 	"nvim-neo-tree/neo-tree.nvim",
 	branch = "v3.x",
+	cmd = "Neotree",
+	keys = {
+		{
+			"<leader>e",
+			function()
+				if vim.bo.filetype == "neo-tree" then
+					vim.cmd("wincmd p")
+				else
+					vim.cmd("Neotree focus filesystem")
+				end
+			end,
+			desc = "Focus Tree/Editor",
+		},
+	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons", -- for icons
+		"nvim-tree/nvim-web-devicons",
 		"MunifTanjim/nui.nvim",
 	},
+	init = function()
+		vim.api.nvim_create_autocmd("BufEnter", {
+			group = vim.api.nvim_create_augroup("NeoTreeInit", { clear = true }),
+			once = true,
+			callback = function()
+				local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(0))
+				if stats and stats.type == "directory" then
+					require("neo-tree.setup.netrw").hijack()
+				end
+			end,
+		})
+	end,
 	config = function()
 		require("neo-tree").setup({
 			close_if_last_window = true,
@@ -28,7 +54,7 @@ return {
 			},
 			filesystem = {
 				filtered_items = {
-					visible = false, -- hide dotfiles by default
+					visible = false,
 					hide_dotfiles = true,
 					hide_gitignored = true,
 					never_show = { ".DS_Store", "thumbs.db" },
@@ -65,6 +91,7 @@ return {
 					["<C-c>"] = "copy_to_clipboard",
 					["<C-v>"] = "paste_from_clipboard",
 					["<C-r>"] = "refresh",
+					-- Focus jump logic within the tree window
 					["<leader>e"] = function()
 						vim.cmd("wincmd p")
 					end,
@@ -102,16 +129,12 @@ return {
 			},
 		})
 
-		-- Toggle/focus Neo-tree with <leader>e, but never close it
-		vim.keymap.set(
-			"n",
-			"<leader>e",
-			"<CMD>Neotree focus filesystem<CR>",
-			{ desc = "Toggle File [E]xplorer", noremap = true, silent = true }
-		)
-		vim.api.nvim_create_autocmd("TabNew", {
+		-- Auto-open on every new tab
+		vim.api.nvim_create_autocmd("TabEnter", {
 			group = vim.api.nvim_create_augroup("NeotreeOnNewTab", { clear = true }),
-			command = "Neotree",
+			callback = function()
+				vim.cmd("Neotree show")
+			end,
 		})
 	end,
 }

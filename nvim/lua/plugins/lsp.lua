@@ -5,10 +5,6 @@ return {
 		-- Lua Development Support
 		{
 			"folke/lazydev.nvim",
-			ft = "lua",
-			opts = {
-				library = { { path = "${3rd}/luv/library", words = { "vim%.uv" } } },
-			},
 		},
 		-- Package Management
 		{ "mason-org/mason.nvim", cmd = "Mason", opts = {} },
@@ -16,8 +12,6 @@ return {
 		{ "WhoIsSethDaniel/mason-tool-installer.nvim", event = "VeryLazy" },
 		-- UI Enhancements
 		{ "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
-		{ "saghen/blink.cmp", event = "InsertEnter" },
-		{ "nvim-telescope/telescope.nvim", event = "VeryLazy" },
 	},
 	config = function()
 		-- 1. SERVER CONFIGURATION
@@ -28,6 +22,17 @@ return {
 			lua_ls = {
 				settings = {
 					Lua = { completion = { callSnippet = "Replace" } },
+				},
+			},
+			tailwindcss = {
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"sass",
+					"postcss",
+					"javascriptreact",
+					"typescriptreact",
 				},
 			},
 		}
@@ -57,14 +62,24 @@ return {
 				end
 
 				-- Keymaps: Telescope Integrations
-				map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-				map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-				map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-				map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
-				map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
-
+				map("grr", function()
+					require("telescope.builtin").lsp_references()
+				end, "[G]oto [R]eferences")
+				map("gri", function()
+					require("telescope.builtin").lsp_implementations()
+				end, "[G]oto [I]mplementation")
+				map("grd", function()
+					require("telescope.builtin").lsp_definitions()
+				end, "[G]oto [D]efinition")
+				map("grt", function()
+					require("telescope.builtin").lsp_type_definitions()
+				end, "[G]oto [T]ype Definition")
+				map("gW", function()
+					require("telescope.builtin").lsp_dynamic_workspace_symbols()
+				end, "Open Workspace Symbols")
 				-- Keymaps: Native Overrides
 				map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+				map("K", vim.lsp.buf.hover, "Hover Documentation")
 
 				-- Feature: Document Highlighting (CursorHold)
 				-- Fix: Suppress param-type-mismatch for 0.11 API change
@@ -143,7 +158,7 @@ return {
 
 		require("mason-tool-installer").setup({
 			ensure_installed = tools_to_install,
-			run_on_start = true,
+			run_on_start = false,
 		})
 
 		require("mason-lspconfig").setup({

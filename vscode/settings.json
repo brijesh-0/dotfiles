@@ -152,5 +152,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "GitHub Dark Default"
+  "workbench.colorTheme": "Catppuccin Mocha"
 }

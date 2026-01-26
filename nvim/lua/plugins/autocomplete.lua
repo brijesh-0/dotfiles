@@ -1,6 +1,6 @@
 return { -- Autocompletion
 	"saghen/blink.cmp",
-	event = "InsertEnter",
+	event = { "InsertEnter", "CmdlineEnter" },
 	version = "1.*",
 	dependencies = {
 		-- Snippet Engine
@@ -69,9 +69,13 @@ return { -- Autocompletion
 		},
 
 		sources = {
-			default = { "lsp", "path", "snippets", "lazydev" },
+			default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 			providers = {
-				lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+				lazydev = {
+					name = "LazyDev",
+					module = "lazydev.integrations.blink",
+					score_offset = 100,
+				},
 			},
 		},
 

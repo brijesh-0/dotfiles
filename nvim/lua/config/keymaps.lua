@@ -48,14 +48,14 @@ vim.keymap.set({ "n", "v", "o" }, "L", function()
 	end
 end, { noremap = true, expr = true, silent = true })
 
-vim.keymap.set("n", "K", function()
-	vim.lsp.buf.hover()
-end, { desc = "LSP: Hover info" })
-
-
-
-vim.keymap.set("v", "p", '"_dP') -- Do not delete copied text when pasting in visual mode
+vim.keymap.set("x", "p", [["_c<Esc>p]], { desc = "Paste without yanking" })
 
 vim.keymap.set("n", "<leader>ww", ":write<CR>", { noremap = true, silent = true }) -- Write/Save current file
 
 vim.keymap.set("n", "<C-q>", ":close<CR>", { noremap = true, silent = true })
+
+-- Resize window using <ctrl> plus arrow keys
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { silent = true, desc = "Increase window height" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { silent = true, desc = "Decrease window height" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { silent = true, desc = "Decrease window width" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { silent = true, desc = "Increase window width" })

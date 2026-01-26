@@ -22,5 +22,5 @@ require("lazy").setup({
 		{ import = "ui" },
 	},
 	install = {},
-	checker = { enabled = true, notify = false },
+	checker = { enabled = false, notify = false },
 })

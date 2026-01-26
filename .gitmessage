@@ -1,0 +1,29 @@
+type(scope): subject
+
+# body
+
+# type:
+#   feat:     A new feature
+#   fix:      A bug fix
+#   docs:     Documentation only changes
+#   style:    Changes that do not affect the meaning of the code (white-space, etc)
+#   refactor: A code change that neither fixes a bug nor adds a feature
+#   perf:     A code change that improves performance
+#   test:     Adding missing tests or correcting existing tests
+#   build:    Changes that affect the build system or external dependencies
+#   ci:       Changes to CI configuration files and scripts
+#   chore:    Other changes that don't modify src or test files
+#   revert:   Reverts a previous commit
+#
+# scope: 
+#   - A short noun describing the section of the codebase (e.g., auth, parser, api).
+#
+# subject:
+#   - Use the imperative, present tense: "change" not "changed" nor "changes"
+#   - Don't capitalize the first letter
+#   - No dot (.) at the end
+#   - If applied, this commit will <subject>
+#
+# body (Optional):
+#   - Explain the "what" and "why" vs. "how". 
+#   - Use a blank line between the subject and the body.

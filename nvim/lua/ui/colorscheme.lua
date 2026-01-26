@@ -13,7 +13,7 @@ local themes = {
 	github = {
 		name = "github-theme",
 		repo = "projekt0n/github-nvim-theme",
-		colorscheme = { "github_dark_dimmed", "github_light" },
+		colorscheme = { "github_dark_dimmed", "github_light", "github_dark_high_contrast" },
 	},
 	kanagawa = {
 		name = "kanagawa",
@@ -30,9 +30,14 @@ local themes = {
 		repo = "loctvl842/monokai-pro.nvim",
 		colorscheme = { "monokai-pro", "monokai-spectrum", "monokai-octagon", "monokai-machine" },
 	},
+	moonfly = {
+		name = "Moonfly",
+		repo = "bluz71/vim-moonfly-colors",
+		colorscheme = { "moonfly" },
+	},
 }
 
-local selected_theme_key = "kanagawa" -- Change this value to switch themes
+local selected_theme_key = "catppuccin" -- Change this value to switch themes
 
 local selected_colorscheme = themes[selected_theme_key].colorscheme[1] -- Default to the first option
 

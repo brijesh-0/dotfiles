@@ -4,6 +4,7 @@
 	signingkey = 8C3C11E87778BD38
 [commit]
 	gpgsign = true
+	template = ~/.gitmessage
 [tag]
 	gpgSign = true
 [core]
@@ -16,7 +17,9 @@
 	st = status
 	last = log -1 HEAD
 	unstage = reset HEAD --
-	lg = log --oneline --graph --decorate --all
+	lg = log --oneline --graph --decorate --all -n 20
+	amend = commit --amend --no-edit
+	dc = diff --cached
 
 [log]
 	date = relative

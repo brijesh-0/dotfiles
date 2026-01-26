@@ -1,7 +1,7 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	event = "VeryLazy",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
+	event = "UIEnter",
 	config = function()
 		local function lsp_name()
 			local clients = vim.lsp.get_clients({ bufnr = 0 })
@@ -12,12 +12,15 @@ return {
 		end
 
 		local function formatter_name()
-			local ok, conform = pcall(require, "conform")
-			if ok then
-				local formatters = conform.list_formatters(0)
-				if #formatters > 0 then
-					return formatters[1].name
-				end
+			-- Check if conform is loaded directly from package.loaded
+			local conform = package.loaded["conform"]
+			if not conform then
+				return ""
+			end
+			
+			local formatters = conform.list_formatters(0)
+			if #formatters > 0 then
+				return formatters[1].name
 			end
 			return ""
 		end
