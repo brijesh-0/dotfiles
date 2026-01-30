@@ -23,21 +23,10 @@ vim.o.cursorline = true
 vim.o.scrolloff = 15
 vim.o.confirm = true
 vim.o.linebreak = true
-
+vim.o.clipboard = "unnamedplus"
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
-
--- Clipboard setting
-vim.schedule(function()
-	vim.o.clipboard = "unnamedplus"
-end)
+vim.o.winborder = "rounded"
 
 -- List characters configuration
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
-
--- Global Floating Window Borders
-local orig = vim.api.nvim_open_win
-vim.api.nvim_open_win = function(buf, enter, config)
-	config.border = config.border or "rounded"
-	return orig(buf, enter, config)
-end

@@ -1,180 +1,175 @@
 return {
-	"neovim/nvim-lspconfig",
-	event = { "BufReadPre", "BufNewFile" },
-	dependencies = {
-		-- Lua Development Support
-		{
-			"folke/lazydev.nvim",
+	-- 1. LSP Configuration (Lazy Loaded)
+	{
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"saghen/blink.cmp",
+			-- Add Vtsls plugin for extra commands (optional but recommended)
+			"yioneko/nvim-vtsls",
 		},
-		-- Package Management
-		{ "mason-org/mason.nvim", cmd = "Mason", opts = {} },
-		{ "mason-org/mason-lspconfig.nvim", event = "VeryLazy" },
-		{ "WhoIsSethDaniel/mason-tool-installer.nvim", event = "VeryLazy" },
-		-- UI Enhancements
-		{ "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
-	},
-	config = function()
-		-- 1. SERVER CONFIGURATION
-		-- Define servers and any specific overrides here
-		local servers = {
-			pyright = {},
-			ts_ls = {},
-			lua_ls = {
-				settings = {
-					Lua = { completion = { callSnippet = "Replace" } },
+		config = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			local lspconfig = require("lspconfig")
+
+			-- Configure Diagnostics (Global)
+			vim.diagnostic.config({
+				float = { border = "rounded" },
+				-- ENABLE INLINE DIAGNOSTICS (Virtual Text)
+				virtual_text = {
+					prefix = "●", -- Could be '■', '▎', 'x'
+					source = "if_many", -- Or "always"
 				},
-			},
-			tailwindcss = {
-				filetypes = {
-					"html",
-					"css",
-					"scss",
-					"sass",
-					"postcss",
-					"javascriptreact",
-					"typescriptreact",
-				},
-			},
-		}
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
+			})
 
-		-- Define tools for Mason to install (formatters, linters)
-		local tools_to_install = {
-			"stylua",
-			"prettier",
-			"prettierd",
-			"shfmt",
-			"black",
-			"isort",
-		}
-
-		-- 2. LSP ATTACHMENT LOGIC
-		-- This runs every time a buffer is attached to an LSP
-		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
-			callback = function(event)
-				local client = vim.lsp.get_client_by_id(event.data.client_id)
-				if not client then
-					return
-				end
-
+			-- MODIFIED: Global on_attach function for LSP keymaps
+			local on_attach = function(client, bufnr)
 				local map = function(keys, func, desc)
-					vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
 				end
 
-				-- Keymaps: Telescope Integrations
-				map("grr", function()
-					require("telescope.builtin").lsp_references()
-				end, "[G]oto [R]eferences")
-				map("gri", function()
-					require("telescope.builtin").lsp_implementations()
-				end, "[G]oto [I]mplementation")
-				map("grd", function()
-					require("telescope.builtin").lsp_definitions()
-				end, "[G]oto [D]efinition")
-				map("grt", function()
-					require("telescope.builtin").lsp_type_definitions()
-				end, "[G]oto [T]ype Definition")
-				map("gW", function()
-					require("telescope.builtin").lsp_dynamic_workspace_symbols()
-				end, "Open Workspace Symbols")
-				-- Keymaps: Native Overrides
+				-- Native LSP Actions (Always work, instant)
+				map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
 				map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+				map("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+				map("gy", vim.lsp.buf.type_definition, "[G]oto T[y]pe Definition")
 				map("K", vim.lsp.buf.hover, "Hover Documentation")
+				map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
-				-- Feature: Document Highlighting (CursorHold)
-				-- Fix: Suppress param-type-mismatch for 0.11 API change
-				---@diagnostic disable-next-line: param-type-mismatch
-				if
-					client:supports_method(
-						vim.lsp.protocol.Methods.textDocument_documentHighlight,
-						{ bufnr = event.buf }
-					)
-				then
-					local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+				-- Snacks Pickers (For "list" scenarios - with fallback)
+				map("gr", function()
+					if pcall(require, "snacks") then
+						Snacks.picker.lsp_references()
+					else
+						vim.lsp.buf.references()
+					end
+				end, "[G]oto [R]eferences (Picker)")
+			end
 
-					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-						buffer = event.buf,
-						group = highlight_augroup,
-						callback = vim.lsp.buf.document_highlight,
-					})
+			-- ADDED: Define Border Handlers
+			local handlers = {
+				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
+			}
 
-					vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-						buffer = event.buf,
-						group = highlight_augroup,
-						callback = vim.lsp.buf.clear_references,
-					})
-
-					vim.api.nvim_create_autocmd("LspDetach", {
-						group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-						callback = function(event2)
-							vim.lsp.buf.clear_references()
-							vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
-						end,
-					})
-				end
-
-				-- Feature: Inlay Hints Toggle
-				---@diagnostic disable-next-line: param-type-mismatch
-				if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, { bufnr = event.buf }) then
-					map("<leader>th", function()
-						local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
-						vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = event.buf })
-					end, "[T]oggle Inlay [H]ints")
-				end
-			end,
-		})
-
-		-- 3. DIAGNOSTIC UI CONFIGURATION
-		vim.diagnostic.config({
-			severity_sort = true,
-			float = { source = "if_many" },
-			underline = { severity = vim.diagnostic.severity.ERROR },
-			signs = vim.g.have_nerd_font and {
-				text = {
-					[vim.diagnostic.severity.ERROR] = "󰅚 ",
-					[vim.diagnostic.severity.WARN] = "󰀪 ",
-					[vim.diagnostic.severity.INFO] = "󰋽 ",
-					[vim.diagnostic.severity.HINT] = "󰌶 ",
+			-- MODIFIED: Added ui.border to Mason setup
+			require("mason").setup({
+				ui = {
+					border = "rounded",
 				},
-			} or {},
-			virtual_text = {
-				source = "if_many",
-				spacing = 2,
-				format = function(diagnostic)
-					-- Custom format: "Error: My error message [source]"
-					local icons = {
-						[vim.diagnostic.severity.ERROR] = "Error",
-						[vim.diagnostic.severity.WARN] = "Warn",
-						[vim.diagnostic.severity.INFO] = "Info",
-						[vim.diagnostic.severity.HINT] = "Hint",
-					}
-					return string.format("%s: %s", icons[diagnostic.severity], diagnostic.message)
-				end,
+			})
+
+			require("mason-lspconfig").setup({
+				ensure_installed = { "lua_ls", "vtsls", "basedpyright", "ruff" },
+				automatic_installation = true,
+				handlers = {
+					-- MODIFIED: Default Handler now includes handlers and on_attach
+					function(server_name)
+						lspconfig[server_name].setup({
+							capabilities = capabilities,
+							handlers = handlers,
+							on_attach = on_attach,
+						})
+					end,
+
+					-- MODIFIED: PYTHON - Added handlers and on_attach
+					["basedpyright"] = function()
+						lspconfig.basedpyright.setup({
+							capabilities = capabilities,
+							handlers = handlers,
+							on_attach = on_attach,
+							settings = {
+								basedpyright = {
+									disableOrganizeImports = true, -- Let Ruff handle this
+									analysis = {
+										ignore = { "*" },
+										typeCheckingMode = "off",
+										diagnosticSeverityOverrides = {
+											reportGeneralTypeIssues = "error", -- Catch "int + string" errors
+											reportOptionalSubscript = "error", -- Catch "None['key']" errors
+											reportOptionalMemberAccess = "error", -- Catch "None.attr" errors
+											reportOptionalCall = "error", -- Catch "None()" errors
+
+											-- Ensure everything else stays dead silent
+											reportMissingTypeStubs = "none",
+											reportUnknownMemberType = "none",
+											reportUnknownArgumentType = "none",
+											reportUnknownVariableType = "none",
+										},
+									},
+								},
+							},
+						})
+					end,
+
+					-- MODIFIED: Ruff - Added handlers, merged on_attach
+					["ruff"] = function()
+						lspconfig.ruff.setup({
+							capabilities = capabilities,
+							handlers = handlers,
+							on_attach = function(client, bufnr)
+								-- Call global on_attach first
+								on_attach(client, bufnr)
+								-- Then apply Ruff-specific overrides
+								client.server_capabilities.hoverProvider = false
+								client.server_capabilities.completionProvider = false
+							end,
+						})
+					end,
+
+					-- MODIFIED: TYPESCRIPT - Added handlers, merged on_attach, added semantic token fix
+					["vtsls"] = function()
+						lspconfig.vtsls.setup({
+							capabilities = capabilities,
+							handlers = handlers,
+							on_attach = function(client, bufnr)
+								-- Call global on_attach first
+								on_attach(client, bufnr)
+								-- DISABLE SEMANTIC TOKENS (Fix for "No Colors" in TS)
+								client.server_capabilities.semanticTokensProvider = nil
+							end,
+							settings = {
+								typescript = {
+									updateImportsOnFileMove = { enabled = "always" },
+									suggest = { completeFunctionCalls = true },
+								},
+								vtsls = {
+									enableMoveToFileCodeAction = true,
+									autoUseWorkspaceTsdk = true,
+									experimental = { completion = { enableServerSideFuzzyMatch = true } },
+								},
+							},
+						})
+					end,
+				},
+			})
+		end,
+	},
+
+	-- 2. Completion (Lazy Loaded by InsertEnter or LSP)
+	{
+		"saghen/blink.cmp",
+		version = "*",
+		event = "InsertEnter", -- LOAD ONLY WHEN TYPING
+		-- or "LspAttach" if you want it ready before typing
+		dependencies = "rafamadriz/friendly-snippets",
+		opts = {
+			keymap = { preset = "default" },
+			appearance = {
+				use_nvim_cmp_as_default = true,
+				nerd_font_variant = "mono",
 			},
-		})
-
-		-- 4. SETUP EXECUTION
-		local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-		require("mason-tool-installer").setup({
-			ensure_installed = tools_to_install,
-			run_on_start = false,
-		})
-
-		require("mason-lspconfig").setup({
-			ensure_installed = vim.tbl_keys(servers),
-			automatic_installation = true,
-			handlers = {
-				function(server_name)
-					local server = servers[server_name] or {}
-					-- Merge default blink capabilities with server specific ones
-					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-
-					-- Native Neovim 0.11+ Setup
-					vim.lsp.config(server_name, server)
-					vim.lsp.enable(server_name)
-				end,
+			sources = {
+				default = { "lsp", "path", "snippets", "buffer" },
 			},
-		})
-	end,
+			signature = { enabled = true },
+		},
+	},
 }
