@@ -11,8 +11,8 @@
 	editor = nvim
 	pager = delta
 [alias]
-	co = checkout
-	br = branch
+	co = switch
+	br = branch -a
 	cm = commit
 	st = status
 	last = log -1 HEAD
@@ -20,6 +20,7 @@
 	lg = log --oneline --graph --decorate --all -n 20
 	amend = commit --amend --no-edit
 	dc = diff --cached
+	hist = log --graph --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(reset) | %C(cyan)%s%C(reset) %C(red)%d%C(reset) [%C(magenta)%an%C(reset)]' --date=short
 
 [log]
 	date = relative
