@@ -11,3 +11,9 @@ abbr -a ftree 'fd -H | tree --fromfile -C -a --dirsfirst'
 abbr -a docker 'sudo docker'
 
 # abbr -a hcat "awk 'FNR==1{if(NR>1)print\"\n======\n\";print FILENAME} {print \$0}'"
+
+abbr -a nrd 'npm run dev'
+abbr -a prs 'pnpm run serve'
+
+abbr -a --position command n 'nvim'
+abbr -a --position command c 'clear'

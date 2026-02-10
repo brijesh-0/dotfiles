@@ -1,10 +1,22 @@
-function fd --wraps fd --description 'fd with default excludes'
+function fd --wraps=fd --description 'fd with default excludes'
 
-    set -l ignore_list .git node_modules dist build venv .venv __pycache__ .cache .next .DS_Store
+    set -l default_excludes \
+        .git \
+        node_modules \
+        dist \
+        build \
+        venv \
+        .venv \
+        __pycache__ \
+        .cache \
+        .next \
+        .DS_Store
 
-    # Prefix every item in the list with '--exclude'
-    set -l ignore_args (string format -- '--exclude=%s' $ignore_list)
+    set -l extra_args
 
-    command fd $ignore_args --hidden --smart-case $argv
+    for excl in $default_excludes
+        set -a extra_args --exclude $excl
+    end
 
+    command fd $extra_args --hidden $argv
 end

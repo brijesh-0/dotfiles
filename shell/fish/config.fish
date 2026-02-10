@@ -1,5 +1,8 @@
 if status is-interactive
 
+	set -gx EDITOR nvim
+	set -gx VISUAL nvim
+
 	set -gx FZF_DEFAULT_COMMAND "fd --type file --max-depth 7 --exclude .git  --exclude .Private"
 
 	set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
@@ -8,6 +11,8 @@ if status is-interactive
 	set -g fish_greeting ''
 
 	set -gx MANPAGER "sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+
+	set -g fish_key_bindings vim_mode
 
 	if command -sq zoxide
 	    zoxide init fish | source
