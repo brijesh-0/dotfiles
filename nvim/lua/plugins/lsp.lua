@@ -1,5 +1,5 @@
 return {
-	-- 1. LSP Configuration (Lazy Loaded)
+	-- 1. LSP Configuration
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
@@ -7,8 +7,9 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"saghen/blink.cmp",
-			-- Add Vtsls plugin for extra commands (optional but recommended)
 			"yioneko/nvim-vtsls",
+			{ "folke/lazydev.nvim", ft = "lua", opts = {} },
+			{ "j-hui/fidget.nvim", opts = {} }, -- Progress tracking (Trace)
 		},
 		config = function()
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -17,10 +18,9 @@ return {
 			-- Configure Diagnostics (Global)
 			vim.diagnostic.config({
 				float = { border = "rounded" },
-				-- ENABLE INLINE DIAGNOSTICS (Virtual Text)
 				virtual_text = {
-					prefix = "●", -- Could be '■', '▎', 'x'
-					source = "if_many", -- Or "always"
+					prefix = "●",
+					source = "if_many",
 				},
 				signs = true,
 				underline = true,
@@ -28,49 +28,47 @@ return {
 				severity_sort = true,
 			})
 
-			-- MODIFIED: Global on_attach function for LSP keymaps
+			-- The Global Attach Function (Optimized)
 			local on_attach = function(client, bufnr)
+				local has_snacks, snacks = pcall(require, "snacks")
+
 				local map = function(keys, func, desc)
 					vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
 				end
 
-				-- Native LSP Actions (Always work, instant)
-				map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-				map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-				map("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-				map("gy", vim.lsp.buf.type_definition, "[G]oto T[y]pe Definition")
-				map("K", vim.lsp.buf.hover, "Hover Documentation")
-				map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-
-				-- Snacks Pickers (For "list" scenarios - with fallback)
-				map("gr", function()
-					if pcall(require, "snacks") then
-						Snacks.picker.lsp_references()
-					else
-						vim.lsp.buf.references()
+				-- Cached Picker Logic
+				local picker = function(name, fallback)
+					return function()
+						if has_snacks then
+							snacks.picker[name]({ jump_to_single = true })
+						else
+							fallback()
+						end
 					end
-				end, "[G]oto [R]eferences (Picker)")
+				end
+
+				map("grd", picker("lsp_definitions", vim.lsp.buf.definition), "Goto Definition")
+				map("grr", picker("lsp_references", vim.lsp.buf.references), "References")
+				map("gri", picker("lsp_implementations", vim.lsp.buf.implementation), "Implementation")
+				map("gry", picker("lsp_type_definitions", vim.lsp.buf.type_definition), "Type Definition")
+				map("grD", vim.lsp.buf.declaration, "Goto Declaration")
+				map("K", vim.lsp.buf.hover, "Hover Documentation")
+				map("<leader>rn", vim.lsp.buf.rename, "Rename")
+				map("<leader>ca", vim.lsp.buf.code_action, "Code Action")
 			end
 
-			-- ADDED: Define Border Handlers
+			-- Border Handlers
 			local handlers = {
 				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
 				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
 			}
 
-			-- MODIFIED: Added ui.border to Mason setup
-			require("mason").setup({
-				ui = {
-					border = "rounded",
-				},
-			})
-
+			require("mason").setup({ ui = { border = "rounded" } })
 			require("mason-lspconfig").setup({
 				ensure_installed = { "lua_ls", "vtsls", "basedpyright", "ruff" },
 				automatic_installation = true,
 				handlers = {
-					-- MODIFIED: Default Handler now includes handlers and on_attach
+					-- Default Handler
 					function(server_name)
 						lspconfig[server_name].setup({
 							capabilities = capabilities,
@@ -79,7 +77,7 @@ return {
 						})
 					end,
 
-					-- MODIFIED: PYTHON - Added handlers and on_attach
+					-- Python: Basedpyright
 					["basedpyright"] = function()
 						lspconfig.basedpyright.setup({
 							capabilities = capabilities,
@@ -87,21 +85,14 @@ return {
 							on_attach = on_attach,
 							settings = {
 								basedpyright = {
-									disableOrganizeImports = true, -- Let Ruff handle this
+									disableOrganizeImports = true,
 									analysis = {
-										ignore = { "*" },
-										typeCheckingMode = "off",
+										typeCheckingMode = "basic",
+										-- Disable diagnostics that Ruff handles better
 										diagnosticSeverityOverrides = {
-											reportGeneralTypeIssues = "error", -- Catch "int + string" errors
-											reportOptionalSubscript = "error", -- Catch "None['key']" errors
-											reportOptionalMemberAccess = "error", -- Catch "None.attr" errors
-											reportOptionalCall = "error", -- Catch "None()" errors
-
-											-- Ensure everything else stays dead silent
-											reportMissingTypeStubs = "none",
-											reportUnknownMemberType = "none",
-											reportUnknownArgumentType = "none",
-											reportUnknownVariableType = "none",
+											reportUnusedImport = "none",
+											reportUnusedVariable = "none",
+											reportUndefinedVariable = "none",
 										},
 									},
 								},
@@ -109,41 +100,50 @@ return {
 						})
 					end,
 
-					-- MODIFIED: Ruff - Added handlers, merged on_attach
+					-- Python: Ruff (The Linter)
 					["ruff"] = function()
 						lspconfig.ruff.setup({
 							capabilities = capabilities,
 							handlers = handlers,
 							on_attach = function(client, bufnr)
-								-- Call global on_attach first
 								on_attach(client, bufnr)
-								-- Then apply Ruff-specific overrides
 								client.server_capabilities.hoverProvider = false
 								client.server_capabilities.completionProvider = false
 							end,
 						})
 					end,
 
-					-- MODIFIED: TYPESCRIPT - Added handlers, merged on_attach, added semantic token fix
+					-- TypeScript: Vtsls
 					["vtsls"] = function()
 						lspconfig.vtsls.setup({
 							capabilities = capabilities,
 							handlers = handlers,
 							on_attach = function(client, bufnr)
-								-- Call global on_attach first
 								on_attach(client, bufnr)
-								-- DISABLE SEMANTIC TOKENS (Fix for "No Colors" in TS)
+								-- Fix for "flat/no color" syntax highlighting in TS
 								client.server_capabilities.semanticTokensProvider = nil
 							end,
 							settings = {
 								typescript = {
 									updateImportsOnFileMove = { enabled = "always" },
 									suggest = { completeFunctionCalls = true },
+									preferences = { preferGoToSourceDefinition = true },
 								},
-								vtsls = {
-									enableMoveToFileCodeAction = true,
-									autoUseWorkspaceTsdk = true,
-									experimental = { completion = { enableServerSideFuzzyMatch = true } },
+							},
+						})
+					end,
+
+					-- Lua: lua_ls
+					["lua_ls"] = function()
+						lspconfig.lua_ls.setup({
+							capabilities = capabilities,
+							handlers = handlers,
+							on_attach = on_attach,
+							settings = {
+								Lua = {
+									diagnostics = { globals = { "vim" } },
+									workspace = { checkThirdParty = false },
+									telemetry = { enabled = false },
 								},
 							},
 						})
@@ -153,13 +153,11 @@ return {
 		end,
 	},
 
-	-- 2. Completion (Lazy Loaded by InsertEnter or LSP)
+	-- 2. Completion (Blink.cmp)
 	{
 		"saghen/blink.cmp",
 		version = "*",
-		event = "InsertEnter", -- LOAD ONLY WHEN TYPING
-		-- or "LspAttach" if you want it ready before typing
-		dependencies = "rafamadriz/friendly-snippets",
+		dependencies = { "rafamadriz/friendly-snippets" },
 		opts = {
 			keymap = { preset = "default" },
 			appearance = {
@@ -169,7 +167,11 @@ return {
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
 			},
-			signature = { enabled = true },
+			signature = { enabled = true, window = { border = "rounded" } },
+			completion = {
+				menu = { border = "rounded" },
+				documentation = { window = { border = "rounded" } },
+			},
 		},
 	},
 }

@@ -64,10 +64,9 @@ return {
 			picker = {
 				sources = {
 					explorer = {
-						-- Configure the explorer behavior
 						layout = { preset = "sidebar", preview = false },
-						auto_close = false, -- Stay open when selecting file?
-						jump = { close = false }, -- Don't close on jump
+						auto_close = false,
+						jump = { close = false },
 					},
 				},
 			},
@@ -98,7 +97,10 @@ return {
 			{
 				"<leader>sb",
 				function()
-					Snacks.picker.buffers()
+					Snacks.picker.buffers({
+						layout = { preset = "select", preview = false },
+						focus = "list",
+					})
 				end,
 				desc = "Buffers",
 			},
@@ -154,6 +156,20 @@ return {
 				end,
 				desc = "File Explorer",
 			},
+			{
+				"<leader>/",
+				function()
+					Snacks.picker("pickers")
+				end,
+				desc = "Search picker list",
+			},
+			{
+				"<leader>?",
+				function()
+					Snacks.picker("keymaps")
+				end,
+				desc = "Search keymaps",
+			},
 
 			-- Themes
 			{
@@ -200,7 +216,6 @@ return {
 			delay = 500, -- Delay before showing the popup (adjust to preference)
 			spec = {
 				{ "<leader>c", group = "Code" }, -- For Conform/Lint mappings
-				{ "<leader>f", group = "Find" }, -- For Snacks Picker files
 				{ "<leader>g", group = "Git" }, -- For Lazygit
 				{ "<leader>s", group = "Search" }, -- For Grep/Buffers
 				{ "<leader>t", group = "Toggle/Theme" }, -- For Colorschemes
@@ -210,15 +225,6 @@ return {
 				breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
 				separator = "➜", -- symbol used between a key and it's label
 				group = "+", -- symbol prepended to a group
-			},
-		},
-		keys = {
-			{
-				"<leader>?",
-				function()
-					require("which-key").show({ global = false })
-				end,
-				desc = "Buffer Local Keymaps (which-key)",
 			},
 		},
 	},
