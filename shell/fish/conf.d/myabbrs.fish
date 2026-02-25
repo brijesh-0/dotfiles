@@ -6,11 +6,13 @@ end
 
 abbr -a !! --position anywhere --function last_history_item
 
-abbr -a ftree 'fd -H | tree --fromfile -C -a --dirsfirst'
+abbr -a --position command ftree 'fd -H | tree --fromfile -C -a --dirsfirst'
 
 abbr -a docker 'sudo docker'
 
 # abbr -a hcat "awk 'FNR==1{if(NR>1)print\"\n======\n\";print FILENAME} {print \$0}'"
+
+abbr -a daten "date '+%F %T'"
 
 abbr -a nrd 'npm run dev'
 abbr -a prs 'pnpm run serve'
