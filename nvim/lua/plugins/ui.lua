@@ -207,6 +207,31 @@ return {
 		opts = {},
 	},
 
+	-- Oil
+	{
+		"stevearc/oil.nvim",
+		-- This ensures the plugin only loads when you hit the keymap or run :Oil
+		cmd = "Oil",
+		keys = {
+			{ "-", "<CMD>Oil --float<CR>", desc = "Open parent directory (floating)" },
+		},
+		opts = {
+			-- Basic floating window configuration
+			float = {
+				padding = 2,
+				max_width = 0.7, -- 0 means no limit
+				max_height = 0.7,
+				border = "rounded", -- Options: "single", "double", "shadow", "rounded"
+			},
+			quit_on_open = true,
+			delete_to_trash = true,
+			skip_confirm_for_simple_edits = true,
+			view_options = {
+				show_hidden = true,
+			},
+		},
+	},
+
 	-- WHICH-KEY: Keybinding Helper
 	{
 		"folke/which-key.nvim",
