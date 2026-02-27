@@ -8,7 +8,6 @@ abbr -a !! --position anywhere --function last_history_item
 
 abbr -a --position command ftree 'fd -H | tree --fromfile -C -a --dirsfirst'
 
-abbr -a docker 'sudo docker'
 
 # abbr -a hcat "awk 'FNR==1{if(NR>1)print\"\n======\n\";print FILENAME} {print \$0}'"
 
@@ -19,3 +18,9 @@ abbr -a prs 'pnpm run serve'
 
 abbr -a --position command n 'nvim'
 abbr -a --position command c 'clear'
+
+# --- Docker ---
+abbr -a docker 'sudo docker'
+abbr -a dcu 'sudo docker compose up -d'
+abbr -a dcd 'sudo docker compose down'
+abbr -a dps 'sudo docker ps -a'
