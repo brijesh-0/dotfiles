@@ -18,6 +18,9 @@ abbr -a prs 'pnpm run serve'
 abbr -a --position command n 'nvim'
 abbr -a --position command c 'clear'
 
+# --- git ---
+abbr -a gitls 'git ls-files | tree --fromfile -C --dirsfirst'
+
 # --- Docker ---
 abbr -a dcu 'docker compose up -d'
 abbr -a dcd 'docker compose down'

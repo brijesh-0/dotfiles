@@ -1,0 +1,11 @@
+completions/
+
+conf.d/*
+
+!conf.d/abbrs.fish
+
+fish_variables
+
+functions/fisher.fish
+functions/*fzf*
+functions/*nvm*

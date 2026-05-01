@@ -1,10 +1,4 @@
 private/*
 shell/zsh/config/zsh/plugins/zsh-autosuggestions/
 
-# fish
-shell/fish/completions
-shell/fish/fish_variables
-shell/fish/functions/_nvm*
-shell/fish/functions/fisher.fish
-shell/fish/conf.d/*
-!shell/fish/conf.d/abbrs.fish
+*.bak
