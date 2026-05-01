@@ -8,7 +8,7 @@ return {
 			{
 				"<leader>bf",
 				function()
-					require("conform").format({ async = true, lsp_fallback = true })
+					require("conform").format({ async = true })
 				end,
 				mode = "",
 				desc = "Format buffer",
@@ -31,7 +31,7 @@ return {
 				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
 				yaml = { "prettier" },
 			},
-			format_on_save = { timeout_ms = 500, lsp_fallback = true },
+			format_on_save = { timeout_ms = 500 },
 		},
 	},
 }

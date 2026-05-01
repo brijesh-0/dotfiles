@@ -15,6 +15,12 @@ require("lazy").setup({
 	spec = {
 		{ import = "plugins" }, -- Import all files in lua/plugins/
 	},
-	checker = { enabled = true, notify = false }, -- Check for updates silently
+	checker = { enabled = true, notify = false },
 	change_detection = { notify = false },
+	performance = {
+		rtp = {
+			-- 0.12: Prevent lazy from resetting RTP so native :TSInstall parsers are found
+			reset = false,
+		},
+	},
 })
