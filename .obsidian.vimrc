@@ -46,3 +46,6 @@ nmap K 15kzz
 " H and L for beginning/end of line (big variants of h & l)
 nmap H ^
 nmap L $
+
+" go to last line & center
+nnoremap G Gzz
