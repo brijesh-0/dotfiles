@@ -36,7 +36,7 @@ function apprm --description "Interactively uninstall Snap or DPKG packages usin
     printf "  - %s\n" $selected_pkgs
 
     read -l -P "Are you sure you want to proceed? [y/N] " confirm
-    if not string match -iq "y" -- "$confirm"
+    if not string match -iq y -- "$confirm"
         echo "Aborted."
         return 0
     end

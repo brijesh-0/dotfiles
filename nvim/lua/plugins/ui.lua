@@ -47,8 +47,9 @@ return {
 			{ "<leader>fr", function() Snacks.picker.resume() end, desc = "Resume Last" },
 
 			-- Search (text/content)
+			{ "<leader>ss", function() Snacks.picker.lines() end, desc = "Search Same Buffer" },
 			{ "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep Text" },
-			{ "<leader>sb", function() Snacks.picker.lines() end, desc = "Search Buffer" },
+			{ "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
 			{ "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
 			{ "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
 			{ "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
@@ -63,6 +64,7 @@ return {
 			{ "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
 			{ "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
 			{ "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
+			{ "<leader>gg", function() Snacks.lazygit.open() end, desc = "Lazygit" },
 		},
 	},
 

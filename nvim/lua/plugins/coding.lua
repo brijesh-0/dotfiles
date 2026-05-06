@@ -25,6 +25,7 @@ return {
 				markdown = { "prettier" },
 				python = { "ruff_format", "ruff_organize_imports" },
 				sh = { "shfmt" },
+				fish = { "fish_indent" },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
 				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 				typescript = { "prettierd", "prettier", stop_after_first = true },

@@ -1,4 +1,6 @@
 gui:
+  border: rounded
+  showIcons: true
   theme:
     activeBorderColor:
       - "#89b4fa"
@@ -30,4 +32,4 @@ gui:
 git:
   pagers:
     - colorArg: always
-      pager: delta --dark --paging=never --line-numbers
+      pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format "nvim://open?url=file://{path}&line={line}"
