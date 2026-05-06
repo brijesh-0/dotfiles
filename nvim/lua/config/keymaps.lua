@@ -4,10 +4,10 @@ local map = vim.keymap.set
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
 
 -- 2. BETTER SAVE
-map("n", "<leader>ww", "<cmd>write<CR>", { desc = "Save File" })
+map("n", "<leader>w", "<cmd>write<CR>", { desc = "Save File" })
 
--- 3. NATIVE UNDOTREE
-map("n", "<leader>u", "<cmd>Undotree<CR>", { desc = "Toggle Undotree" })
+-- 3. QUIT
+map("n", "<leader>q", "<cmd>confirm quit<CR>", { desc = "Quit" })
 
 -- 4. TERMINAL ESCAPE
 map("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })

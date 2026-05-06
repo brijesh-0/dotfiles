@@ -41,11 +41,28 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>sf", function() Snacks.picker.files() end, desc = "Find Files" },
+			-- Find (files/objects)
+			{ "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
+			{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find Buffers" },
+			{ "<leader>fr", function() Snacks.picker.resume() end, desc = "Resume Last" },
+
+			-- Search (text/content)
 			{ "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep Text" },
-			{ "<leader>sb", function() Snacks.picker.buffers() end, desc = "Buffers" },
-			{ "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+			{ "<leader>sb", function() Snacks.picker.lines() end, desc = "Search Buffer" },
+			{ "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
+			{ "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
+			{ "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
+
+			-- Pickers menu
 			{ "<leader>/", function() Snacks.picker("pickers") end, desc = "Pickers" },
+
+			-- Explorer
+			{ "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+
+			-- Git
+			{ "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
+			{ "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
+			{ "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
 		},
 	},
 
@@ -70,8 +87,11 @@ return {
 			preset = "modern",
 			spec = {
 				{ "<leader>g", group = "Git" },
+				{ "<leader>f", group = "Find" },
 				{ "<leader>s", group = "Search" },
 				{ "<leader>w", group = "Write" },
+				{ "<leader>h", group = "Hunks" },
+				{ "<leader>q", group = "Quit" },
 			},
 		},
 	},
