@@ -16,4 +16,10 @@ function vim_mode
     bind -M default L end-of-line
 
     bind -M default \ee edit_command_buffer
+
+    # Clipboard integration
+    bind -M visual y fish_clipboard_copy end-selection repaint-mode
+    bind -M default p fish_clipboard_paste
+    bind -M default P fish_clipboard_paste
+    bind -M default yy fish_clipboard_copy
 end
