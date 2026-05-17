@@ -152,5 +152,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Catppuccin Mocha"
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "security.workspace.trust.untrustedFiles": "open",
+  "terminal.external.linuxExec": "kitty",
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "diffEditor.ignoreTrimWhitespace": false
 }
