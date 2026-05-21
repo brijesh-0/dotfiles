@@ -53,6 +53,7 @@ return {
 			{ "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
 			{ "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
 			{ "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
+			{ "<leader>su", function() Snacks.picker.undo() end, desc = "Visual Undo Tree" },
 
 			-- Pickers menu
 			{ "<leader>/", function() Snacks.picker("pickers") end, desc = "Pickers" },

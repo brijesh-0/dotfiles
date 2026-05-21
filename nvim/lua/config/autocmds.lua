@@ -44,21 +44,10 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   end,
 })
 
--- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = vim.api.nvim_create_augroup("checktime", { clear = true }),
-  callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
-  end,
-})
-
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("close_with_q", { clear = true }),
   pattern = {
-    "PlenaryTestPopup",
     "checkhealth",
     "dbout",
     "gitsigns-blame",
@@ -69,6 +58,8 @@ vim.api.nvim_create_autocmd("FileType", {
     "neotest-output-panel",
     "neotest-summary",
     "notify",
+	"oil",
+    "PlenaryTestPopup",
     "qf",
     "spectre_panel",
     "startuptime",
@@ -102,11 +93,17 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Auto create dir when saving a file
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  callback = function(event)
-    local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-  end,
+	group = vim.api.nvim_create_augroup("auto_create_dir", { clear = true }),
+	callback = function(event)
+		-- Skip if this is an oil buffer
+		if vim.bo[event.buf].filetype == "oil" then
+			return
+		end
+		local file = vim.uv.fs_realpath(event.match) or event.match
+		vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+	end,
 })
+
 -- Set filetype for .env and .env.* files
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),

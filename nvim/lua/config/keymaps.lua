@@ -1,37 +1,40 @@
 local map = vim.keymap.set
 
--- 1. CLEAR HIGHLIGHTS
+-- CLEAR HIGHLIGHTS
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
 
--- 2. BETTER SAVE
-map("n", "<leader>w", "<cmd>write<CR>", { desc = "Save File" })
+-- SAVE
+map("n", "<leader>ww", "<cmd>write<CR>", { desc = "Save File" })
 
--- 3. QUIT
-map("n", "<leader>q", "<cmd>confirm quit<CR>", { desc = "Quit" })
+-- QUIT
+map("n", "<leader>qq", "<cmd>confirm quit<CR>", { desc = "Quit" })
 
--- 4. TERMINAL ESCAPE
+-- SAVE & QUIT
+map("n", "<leader>wq", "<cmd>wq<CR>", { desc = "Save & Quit" })
+
+-- TERMINAL ESCAPE
 map("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
 
--- 5. Smart j/k: moves by visual lines when no count, real lines with count
+-- Smart j/k: moves by visual lines when no count, real lines with count
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
--- 6. CENTERED SCROLLING
+-- CENTERED SCROLLING
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
 map("n", "N", "Nzzzv")
 
--- 7. SMART H/L
+-- SMART H/L
 map({ "n", "v", "o" }, "H", "^", { desc = "Start of Line" })
 map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" })
 
--- 8. PASTE WITHOUT YANK
+-- PASTE WITHOUT YANK
 map("v", "p", '"_dP', { noremap = true, silent = true, desc = "Paste without yank" })
 
--- 9. WINDOW NAVIGATION
+-- WINDOW NAVIGATION
 map("n", "<C-h>", "<C-w>h", { desc = "Left Window" })
 map("n", "<C-j>", "<C-w>j", { desc = "Lower Window" })
 map("n", "<C-k>", "<C-w>k", { desc = "Upper Window" })
