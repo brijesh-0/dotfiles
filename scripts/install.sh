@@ -35,12 +35,13 @@ echo "Installing eget and binaries"
 curl https://zyedidia.github.io/eget.sh | BINDIR="$HOME/.local/bin" sh
 
 # Download latest stable binaries
-"$HOME/.local/bin/eget" ajeetdsouza/zoxide --to "$HOME/.local/bin"
-"$HOME/.local/bin/eget" burntsushi/ripgrep --to "$HOME/.local/bin"
-"$HOME/.local/bin/eget" junegunn/fzf --to "$HOME/.local/bin"
+"$HOME/.local/bin/eget" ajeetdsouza/zoxide --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" burntsushi/ripgrep --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" junegunn/fzf --to "$HOME/.local/bin/"
 "$HOME/.local/bin/eget" neovim/neovim --asset appimage --asset x86_64 --to "$HOME/.local/bin/nvim"
-"$HOME/.local/bin/eget" sharkdp/bat --asset gnu --to "$HOME/.local/bin"
-"$HOME/.local/bin/eget" sharkdp/fd --asset gnu --to "$HOME/.local/bin"
+"$HOME/.local/bin/eget" sharkdp/bat --asset gnu --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" sharkdp/fd --asset gnu --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" eza-community/eza --asset gnu --asset tar --to "$HOME/.local/bin/"
 
 chmod +x ~/.local/bin/nvim
 
