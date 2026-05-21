@@ -27,8 +27,6 @@ if status is-interactive
 
     set -g fish_greeting ''
 
-    set -gx MANPAGER "bat -p -lman"
-
     set -g fish_key_bindings vim_mode
 
     if command -sq zoxide

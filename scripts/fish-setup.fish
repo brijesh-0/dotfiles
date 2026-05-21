@@ -11,3 +11,6 @@ curl -L https://raw.githubusercontent.com/sharkdp/bat/master/assets/completions/
 uv generate-shell-completion fish >~/.config/fish/completions/uv.fish
 typst completions fish >~/.config/fish/completions/typst.fish
 zoxide init fish >~/.config/fish/completions/zoxide.fish
+
+# Set Theme
+fish_config theme choose catppuccin-mocha
