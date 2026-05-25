@@ -23,6 +23,7 @@ echo "Installing Snaps"
 sudo snap install bitwarden localsend pdfarranger onlyoffice-desktopeditors
 sudo snap install obsidian --classic
 sudo snap install code --classic
+sudo snap install yazi --classic
 
 echo "Installing Chromium Browser (Brave)"
 curl -fsS https://dl.brave.com/install.sh | sh
@@ -32,16 +33,21 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Binary management via eget
 echo "Installing eget and binaries"
-curl https://zyedidia.github.io/eget.sh | BINDIR="$HOME/.local/bin" sh
+curl https://zyedidia.github.io/eget.sh | sh
+mv ~/eget ~/.local/bin/
 
 # Download latest stable binaries
 "$HOME/.local/bin/eget" ajeetdsouza/zoxide --to "$HOME/.local/bin/"
 "$HOME/.local/bin/eget" burntsushi/ripgrep --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" dandavison/delta --asset gnu --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" eza-community/eza --asset gnu --asset tar --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" jesseduffield/lazygit --to "$HOME/.local/bin/"
 "$HOME/.local/bin/eget" junegunn/fzf --to "$HOME/.local/bin/"
 "$HOME/.local/bin/eget" neovim/neovim --asset appimage --asset x86_64 --to "$HOME/.local/bin/nvim"
 "$HOME/.local/bin/eget" sharkdp/bat --asset gnu --to "$HOME/.local/bin/"
 "$HOME/.local/bin/eget" sharkdp/fd --asset gnu --to "$HOME/.local/bin/"
-"$HOME/.local/bin/eget" eza-community/eza --asset gnu --asset tar --to "$HOME/.local/bin/"
+"$HOME/.local/bin/eget" imagemagick/imagemagick --asset gcc --to "$HOME/.local/bin/magick"
+"$HOME/.local/bin/eget" typst/typst --to "$HOME/.local/bin/"
 
 chmod +x ~/.local/bin/nvim
 
