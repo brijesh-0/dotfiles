@@ -1,5 +1,6 @@
 gui:
   border: rounded
+  screenMode: half
   showIcons: true
   theme:
     activeBorderColor:
@@ -33,3 +34,6 @@ git:
   pagers:
     - colorArg: always
       pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format "nvim://open?url=file://{path}&line={line}"
+  log:
+    showGraph: "always"
+    showWholeGraph: true
