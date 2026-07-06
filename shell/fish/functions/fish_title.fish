@@ -14,5 +14,5 @@
 #     echo $prompt
 # end
 function fish_title
-	echo " "
+    echo (basename $PWD)
 end

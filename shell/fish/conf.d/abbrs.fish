@@ -12,23 +12,24 @@ abbr -a cb 'kitten clipboard'
 
 abbr -a daten "date '+%F %T'"
 
+abbr -a --position command pn pnpm
 abbr -a nrd 'npm run dev'
 abbr -a prs 'pnpm run serve'
 
-abbr -a --position command n 'nvim'
-abbr -a --position command c 'clear'
+abbr -a --position command n nvim
+abbr -a --position command c clear
 
 # --- git ---
+abbr -a --position command g git
 abbr -a gitls 'git ls-files | tree --fromfile -C --dirsfirst'
-abbr -a --position command lg 'lazygit'
+abbr -a --position command lg lazygit
 
 # --- Docker ---
 abbr -a dcu 'docker compose up -d'
 abbr -a dcd 'docker compose down'
-abbr -a dps 'docker ps -a'
 
 # --- Hledger ---
-abbr -a hl 'hledger'
+abbr -a hl hledger
 abbr -a hla 'hledger add'
 abbr -a hlb 'hledger bal not:equity --no-total'
 abbr -a hld 'hledger bal not:expense --no-total tag:person --pivot person'
