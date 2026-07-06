@@ -98,4 +98,11 @@ return {
 			},
 		},
 	},
+
+	-- Comfy
+	{
+		'mluders/comfy-line-numbers.nvim',
+		opts = {}
+	}
+	
 }
