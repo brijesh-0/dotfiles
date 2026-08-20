@@ -10,8 +10,6 @@ abbr -a --position command ftree 'fd -H | tree --fromfile -C -a --dirsfirst'
 
 abbr -a cb 'kitten clipboard'
 
-abbr -a daten "date '+%F %T'"
-
 abbr -a --position command pn pnpm
 abbr -a nrd 'npm run dev'
 abbr -a prs 'pnpm run serve'
