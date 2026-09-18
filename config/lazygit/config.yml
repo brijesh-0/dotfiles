@@ -36,4 +36,4 @@ git:
       pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format "nvim://open?url=file://{path}&line={line}"
   log:
     showGraph: "always"
-    showWholeGraph: true
+    showWholeGraph: false
