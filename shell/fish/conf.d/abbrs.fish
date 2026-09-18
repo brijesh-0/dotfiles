@@ -17,6 +17,8 @@ abbr -a prs 'pnpm run serve'
 abbr -a --position command n nvim
 abbr -a --position command c clear
 
+abbr -a --position command cpd 'pwd | kitten clipboard; pwd'
+
 # --- git ---
 abbr -a --position command g git
 abbr -a gitls 'git ls-files | tree --fromfile -C --dirsfirst'
