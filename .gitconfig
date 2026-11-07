@@ -1,7 +1,7 @@
 [user]
 	name = brijesh
 	email = 145837789+brijesh-0@users.noreply.github.com
-	signingkey = 8C3C11E87778BD38
+	signingkey = ~/.ssh/github_ssh.pub
 [commit]
 	gpgsign = true
 	template = ~/.gitmessage
@@ -10,6 +10,7 @@
 [core]
 	editor = nvim
 	pager = delta
+	excludesfile = ~/.gitignore
 [alias]
 	co = switch
 	br = branch -a
@@ -17,11 +18,13 @@
 	st = status
 	last = log -1 HEAD
 	unstage = reset HEAD --
-	lg = log --oneline --graph --decorate --exclude='refs/t3/checkpoints/*' -n 20 --all 
+	lg = log --oneline --graph --decorate --exclude='refs/t3/*' -n 40 --all
 	amend = commit --amend --no-edit
 	dc = diff --cached
 	hist = log --graph --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(reset) | %C(cyan)%s%C(reset) %C(red)%d%C(reset) [%C(magenta)%an%C(reset)]' --date=short
 	undo = reset --soft HEAD~1
+	branches = branch --sort=-committerdate
+	conflicts = diff --name-only --diff-filter=U
 
 [log]
 	date = relative
@@ -51,3 +54,13 @@
 	tool = delta
 [difftool "delta"]
 	cmd = delta \"$LOCAL\" \"$REMOTE\"
+[gpg]
+	format = ssh
+[push]
+	autoSetupRemote = true
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+[fetch]
+	prune = true
+[branch]
+	sort = -committerdate
