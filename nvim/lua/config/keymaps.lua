@@ -32,7 +32,13 @@ map({ "n", "v", "o" }, "H", "^", { desc = "Start of Line" })
 map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" })
 
 -- PASTE WITHOUT YANK
-map("v", "p", '"_dP', { noremap = true, silent = true, desc = "Paste without yank" })
+map("x", "p", "P", { silent = true, desc = "Paste without yank" })
+
+-- DELETE/CHANGE WITHOUT CLOBBERING THE CLIPBOARD (y and d still copy/cut)
+map({ "n", "x" }, "x", '"_x', { desc = "Delete char (no yank)" })
+map({ "n", "x" }, "X", '"_X', { desc = "Delete char back (no yank)" })
+map({ "n", "x" }, "c", '"_c', { desc = "Change (no yank)" })
+map({ "n", "x" }, "C", '"_C', { desc = "Change to EOL (no yank)" })
 
 -- WINDOW NAVIGATION
 map("n", "<C-h>", "<C-w>h", { desc = "Left Window" })
@@ -51,14 +57,6 @@ map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", {
 -- Better indenting (stay in visual mode)
 map("v", "<", "<gv")
 map("v", ">", ">gv")
-
--- Auto-close pairs (simple, no plugin needed)
-map("i", "`", "``<left>")
-map("i", '"', '""<left>')
-map("i", "(", "()<left>")
-map("i", "[", "[]<left>")
-map("i", "{", "{}<left>")
-map("i", "<", "<><left>")
 
 -- Quickfix and location lists
 map("n", "<leader>xl", function()

@@ -3,7 +3,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking text",
 	group = vim.api.nvim_create_augroup("native-highlight-yank", { clear = true }),
 	callback = function()
-		vim.highlight.on_yank()
+		vim.hl.on_yank()
 	end,
 })
 
@@ -104,19 +104,10 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	end,
 })
 
--- Set filetype for .env and .env.* files
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
-  pattern = { "*.env", ".env.*" },
-  callback = function()
-    vim.opt_local.filetype = "sh"
-  end,
-})
-
 -- Set filetype for .toml files
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("toml_filetype", { clear = true }),
-  pattern = { "*.tomg-config*" },
+  pattern = { "*.toml-config*" },
   callback = function()
     vim.opt_local.filetype = "toml"
   end,

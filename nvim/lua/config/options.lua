@@ -41,31 +41,18 @@ vim.opt.foldtext = "" -- Use native treesitter foldtext
 
 vim.opt.laststatus = 3 -- Global statusline
 
-function MyStatusLine()
-  return table.concat({
-    " %f",       -- File path
-    " %m",       -- Modified flag
-    "%=",        -- Right align spacer
-    " %y ",      -- Filetype
-    " %l:%c ",   -- Line:Column
-    " %P ",      -- Percentage through file
-  })
-end
-
-vim.opt.statusline = "%!v:lua.MyStatusLine()"
-
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 vim.filetype.add({
   extension = {
-    env = "dotenv",
+    env = "sh",
   },
   filename = {
-    [".env"] = "dotenv",
-    ["env"] = "dotenv",
+    [".env"] = "sh",
+    ["env"] = "sh",
   },
   pattern = {
     ["[jt]sconfig.*.json"] = "jsonc",
-    ["%.env%.[%w_.-]+"] = "dotenv",
+    ["%.env%.[%w_.-]+"] = { "sh", { priority = 10 } },
   },
 })
