@@ -28,12 +28,12 @@ gui:
       - "#f38ba8"
     defaultFgColor:
       - "#cdd6f4"
-  authorColors:
-    "*": "#b4befe"
+    authorColors:
+      "*": "#b4befe"
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format "nvim://open?url=file://{path}&line={line}"
+      command: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format "nvim://open?url=file://{path}&line={line}"
   log:
     showGraph: "always"
     showWholeGraph: false
