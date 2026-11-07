@@ -20,7 +20,11 @@ function toimg --description 'Convert images to a chosen format'
 
     # Limit directory scans to common image formats, and check local codec support.
     set -l formats avif jpg jpeg png webp heic heif tif tiff bmp gif svg
-    set -l available (magick -list format | string match -r '^\s*[A-Za-z0-9]+\*?\s+\S+\s+\S+')
+    set -l available (magick -list format)
+    or begin
+        echo 'Error: could not list ImageMagick formats.' >&2
+        return 1
+    end
     set -l readable
     set -l writable
     for format in $formats
@@ -33,11 +37,12 @@ function toimg --description 'Convert images to a chosen format'
         end
         for entry in $available
             set -l fields (string split -n ' ' -- (string trim -- $entry))
-            if test (string replace -r '\*$' '' -- $fields[1]) = "$coder"
-                if string match -q 'r*' -- $fields[3]
+            if set -q fields[1]; and test (string replace -r '\*$' '' -- $fields[1]) = "$coder"
+                set -l mode (string match -r '^[r-][w-][+-]$' -- $fields[2..])
+                if string match -q 'r*' -- $mode
                     set -a readable $format
                 end
-                if string match -rq '^.w' -- $fields[3]
+                if string match -rq '^.w' -- $mode
                     set -a writable $format
                 end
                 break
