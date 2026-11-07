@@ -1,6 +1,9 @@
 if status is-interactive
 
-    fish_add_path ~/.local/bin/ ~/.local/share/pnpm ~/.opencode/bin
+    fish_config theme choose catppuccin-mocha
+
+    # fish_add_path ~/.local/bin/ ~/.local/share/pnpm ~/.opencode/bin # ubuntu
+    fish_add_path ~/Library/pnpm/bin ~/.local/bin/ # macos
 
     set -gx EDITOR nvim
     set -gx VISUAL nvim
@@ -17,7 +20,7 @@ if status is-interactive
 	"
 
     # 2. Search Engine
-    set -gx FZF_DEFAULT_COMMAND "fd --type file --follow --hidden --exclude .git --exclude .Private"
+    set -gx FZF_DEFAULT_COMMAND "fd --type file --follow --hidden --exclude .git"
 
     # 3. Tool Specifics
     # Note: We keep these clean; they inherit the layout and border from above.
@@ -26,11 +29,18 @@ if status is-interactive
 
     set -gx FZF_CTRL_R_OPTS "--preview 'echo {}' --preview-window='bottom:3:wrap'"
 
+    # make MacOS option+c work like alt+c
+    bind -M insert ç fzf-cd-widget
+
     set -g fish_greeting ''
 
     set -g fish_key_bindings vim_mode
 
     fish_config theme choose catppuccin-mocha
+
+    if command -sq fnm
+        fnm env --use-on-cd --version-file-strategy=recursive | source
+    end
 
     if command -sq zoxide
         zoxide init fish | source
@@ -43,10 +53,3 @@ if status is-interactive
     end
 
 end
-
-# pnpm
-set -gx PNPM_HOME "/home/ben/.local/share/pnpm"
-if not string match -q -- "$PNPM_HOME/bin" $PATH
-    set -gx PATH "$PNPM_HOME/bin" $PATH
-end
-# pnpm end

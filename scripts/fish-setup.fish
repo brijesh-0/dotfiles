@@ -24,4 +24,4 @@ if test "$TERM" = xterm-kitty
     kitty +complete setup fish >'~/.config/fish/completions/kitty.fish'
 end
 
-fish_config theme choose catppuccin-mocha
+echo "now run: fish_config theme choose catppuccin-mocha"
